@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import toast
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://blog-management-api-itf8.onrender.com/api';
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
     const response = await axios.get(`${API_URL}/posts`);
