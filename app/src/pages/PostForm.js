@@ -74,6 +74,9 @@ const PostForm = ({ isCreateMode }) => {
                         <Button type="submit" variant="primary">
                             {isCreateMode ? 'Create Post' : 'Update Post'}
                         </Button>
+                        <Button variant="secondary" onClick={() => navigate(-1)} className='ms-3'>
+                            Back
+                        </Button>
                     </Form>
                 </Card.Body>
             </Card>
