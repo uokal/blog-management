@@ -1,40 +1,51 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchPosts, deletePost } from '../redux/postsSlice';
+import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { fetchPosts } from '../features/posts/postsSlice';
-import Spinner from '../components/Spinner';
-import { Button, Container, ListGroup, ListGroupItem } from 'reactstrap';
 
 const Home = () => {
     const dispatch = useDispatch();
-    const { posts, status } = useSelector((state) => state.posts);
+    const posts = useSelector((state) => state.posts.posts);
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchPosts());
-        }
-    }, [status, dispatch]);
+        dispatch(fetchPosts());
+    }, [dispatch]);
 
-    if (status === 'loading') {
-        return <Spinner />;
-    }
+    const handleDelete = (id) => {
+        dispatch(deletePost(id));
+    };
 
     return (
-        <Container>
-            <h1>Blog Posts</h1>
-            <Button color="primary" tag={Link} to="/create">
-                Create New Post
-            </Button>
-            <ListGroup className="mt-4">
+        <Container className="mt-5">
+            <Row className="mb-3">
+                <Col>
+                    <Link to="/create">
+                        <Button variant="success">Create New Post</Button>
+                    </Link>
+                </Col>
+            </Row>
+            <Row>
                 {posts.map((post) => (
-                    <ListGroupItem key={post._id}>
-                        <Link to={`/posts/${post._id}`}>
-                            <h5>{post.title}</h5>
-                            <p>{new Date(post.createdAt).toLocaleDateString()}</p>
-                        </Link>
-                    </ListGroupItem>
+                    <Col md={4} key={post._id} className="mb-4">
+                        <Card>
+                            <Card.Body>
+                                <Card.Title>{post.title}</Card.Title>
+                                <Card.Text>
+                                    {post.content.substring(0, 100)}...
+                                </Card.Text>
+                                <Link to={`/edit/${post._id}`}>
+                                    <Button variant="primary" className="me-2">Edit</Button>
+                                </Link>
+                                <Button variant="danger" onClick={() => handleDelete(post._id)}>Delete</Button>
+                            </Card.Body>
+                            <Card.Footer className="text-muted">
+                                {new Date(post.createdAt).toLocaleDateString()}
+                            </Card.Footer>
+                        </Card>
+                    </Col>
                 ))}
-            </ListGroup>
+            </Row>
         </Container>
     );
 };
