@@ -34,6 +34,9 @@ const Home = () => {
                                 <Card.Text>
                                     {post.content.substring(0, 100)}...
                                 </Card.Text>
+                                <Link to={`/view/${post._id}`}>
+                                    <Button variant="info" className="me-2">View</Button>
+                                </Link>
                                 <Link to={`/edit/${post._id}`}>
                                     <Button variant="primary" className="me-2">Edit</Button>
                                 </Link>
